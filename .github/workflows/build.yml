@@ -1,21 +1,20 @@
-name: GitHub CI
-
-on:
-    push:
-        branches:
-            - master
-
 jobs:
-    build:
-        runs-on: ubuntu-latest
-
-        steps:
-            -   uses: actions/checkout@v2
-            -   name: Set up Java
-                uses: actions/setup-java@v2
-                with:
-                    java-version: '8'
-                    distribution: 'zulu'
-                    cache: maven
-            -   name: Build with Maven
-                run: mvn --batch-mode --update-snapshots verify
+  build:
+    runs-on: self-hosted
+    steps:
+    - continue-on-error: true
+      uses: actions/checkout@v2
+    - continue-on-error: true
+      name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        cache: maven
+        distribution: zulu
+        java-version: '8'
+    - continue-on-error: true
+      name: Build with Maven
+      run: mvn --batch-mode --update-snapshots verify
+name: GitHub CI
+on:
+  repository_dispatch:
+    types: trigger-ga___build.yml
